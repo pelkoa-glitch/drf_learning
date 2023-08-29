@@ -3,10 +3,11 @@ from guitars.models import Guitars
 
 
 class GuitarsSerializer(serializers.ModelSerializer):
+    user = serializers.HiddenField(default=serializers.CurrentUserDefault())
+
     class Meta:
         model = Guitars
         fields = "__all__"
-
 
 # Как работает сериализатор под капотом
 # class GuitarsSerializer(serializers.Serializer):
