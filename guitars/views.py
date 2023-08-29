@@ -1,48 +1,52 @@
 from rest_framework import generics, viewsets
 from rest_framework.decorators import action
+from rest_framework.permissions import IsAuthenticatedOrReadOnly
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from .models import Guitars, Category
+from .permissions import IsAdminOrReadOnly, IsOwnerOrReadOnly
 from .serializers import GuitarsSerializer
 
 
-class GuitarsViewSet(viewsets.ModelViewSet):
-    # Если убираем атрибут queryset в
-    # роутере необходимо добавить basename
-    # queryset = Guitars.objects.all()
+class GuitarsAPIList(generics.ListCreateAPIView):
+    queryset = Guitars.objects.all()
     serializer_class = GuitarsSerializer
-
-    def get_queryset(self):
-        pk = self.kwargs.get("pk")
-
-        if not pk:
-            return Guitars.objects.all()
-
-        return Guitars.objects.filter(pk=pk)
-
-    # С помощью декоратора @action можно добавлять новые "не стандартные
-    # маршруты" в класс ViewSet
-    @action(methods=['get'], detail=True)
-    def category(self, request, pk=None):
-        cats = Category.objects.get(pk=pk)
-        return Response({'cats': cats.name})
+    permission_classes = (IsAuthenticatedOrReadOnly, )
 
 
-# # Api на основе базовых классов DRF
-# class GuitarsAPIList(generics.ListCreateAPIView):
-#     queryset = Guitars.objects.all()
+class GuitarsAPIUpdate(generics.RetrieveUpdateAPIView):
+    queryset = Guitars.objects.all()
+    serializer_class = GuitarsSerializer
+    permission_classes = (IsOwnerOrReadOnly, )
+
+
+class GuitarsAPIDestroy(generics.RetrieveDestroyAPIView):
+    queryset = Guitars.objects.all()
+    serializer_class = GuitarsSerializer
+    permission_classes = (IsAdminOrReadOnly, )
+
+
+# class GuitarsViewSet(viewsets.ModelViewSet):
+#     # Если убираем атрибут queryset в
+#     # роутере необходимо добавить basename
+#     # queryset = Guitars.objects.all()
 #     serializer_class = GuitarsSerializer
 #
+#     def get_queryset(self):
+#         pk = self.kwargs.get("pk")
 #
-# class GuitarsAPIUpdate(generics.UpdateAPIView):
-#     queryset = Guitars.objects.all()
-#     serializer_class = GuitarsSerializer
+#         if not pk:
+#             return Guitars.objects.all()
 #
+#         return Guitars.objects.filter(pk=pk)
 #
-# class GuitarsAPIDetailView(generics.RetrieveUpdateDestroyAPIView):
-#     queryset = Guitars.objects.all()
-#     serializer_class = GuitarsSerializer
+#     # С помощью декоратора @action можно добавлять новые "не стандартные
+#     # маршруты" в класс ViewSet
+#     @action(methods=['get'], detail=True)
+#     def category(self, request, pk=None):
+#         cats = Category.objects.get(pk=pk)
+#         return Response({'cats': cats.name})
 
 
 # Как работает Api под капотом(GET, POST, PUT, DELETE).
