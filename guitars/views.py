@@ -1,14 +1,32 @@
 from rest_framework import generics, viewsets
+from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from .models import Guitars
+from .models import Guitars, Category
 from .serializers import GuitarsSerializer
 
 
 class GuitarsViewSet(viewsets.ModelViewSet):
-    queryset = Guitars.objects.all()
+    # Если убираем атрибут queryset в
+    # роутере необходимо добавить basename
+    # queryset = Guitars.objects.all()
     serializer_class = GuitarsSerializer
+
+    def get_queryset(self):
+        pk = self.kwargs.get("pk")
+
+        if not pk:
+            return Guitars.objects.all()
+
+        return Guitars.objects.filter(pk=pk)
+
+    # С помощью декоратора @action можно добавлять новые "не стандартные
+    # маршруты" в класс ViewSet
+    @action(methods=['get'], detail=True)
+    def category(self, request, pk=None):
+        cats = Category.objects.get(pk=pk)
+        return Response({'cats': cats.name})
 
 
 # # Api на основе базовых классов DRF
