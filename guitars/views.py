@@ -1,4 +1,4 @@
-from rest_framework import generics
+from rest_framework import generics, viewsets
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
@@ -6,20 +6,25 @@ from .models import Guitars
 from .serializers import GuitarsSerializer
 
 
-# Api на основе базовых классов DRF
-class GuitarsAPIList(generics.ListCreateAPIView):
+class GuitarsViewSet(viewsets.ModelViewSet):
     queryset = Guitars.objects.all()
     serializer_class = GuitarsSerializer
 
 
-class GuitarsAPIUpdate(generics.UpdateAPIView):
-    queryset = Guitars.objects.all()
-    serializer_class = GuitarsSerializer
-
-
-class GuitarsAPIDetailView(generics.RetrieveUpdateDestroyAPIView):
-    queryset = Guitars.objects.all()
-    serializer_class = GuitarsSerializer
+# # Api на основе базовых классов DRF
+# class GuitarsAPIList(generics.ListCreateAPIView):
+#     queryset = Guitars.objects.all()
+#     serializer_class = GuitarsSerializer
+#
+#
+# class GuitarsAPIUpdate(generics.UpdateAPIView):
+#     queryset = Guitars.objects.all()
+#     serializer_class = GuitarsSerializer
+#
+#
+# class GuitarsAPIDetailView(generics.RetrieveUpdateDestroyAPIView):
+#     queryset = Guitars.objects.all()
+#     serializer_class = GuitarsSerializer
 
 
 # Как работает Api под капотом(GET, POST, PUT, DELETE).
