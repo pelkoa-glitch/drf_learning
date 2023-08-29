@@ -1,6 +1,6 @@
 from rest_framework import generics, viewsets
 from rest_framework.decorators import action
-from rest_framework.permissions import IsAuthenticatedOrReadOnly
+from rest_framework.permissions import IsAuthenticatedOrReadOnly, IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
@@ -18,7 +18,9 @@ class GuitarsAPIList(generics.ListCreateAPIView):
 class GuitarsAPIUpdate(generics.RetrieveUpdateAPIView):
     queryset = Guitars.objects.all()
     serializer_class = GuitarsSerializer
-    permission_classes = (IsOwnerOrReadOnly, )
+    permission_classes = (IsAuthenticated, )
+    # Раскомментировать для использования обычных токенов.
+    # authentication_classes = (TokenAuthentication, )
 
 
 class GuitarsAPIDestroy(generics.RetrieveDestroyAPIView):
