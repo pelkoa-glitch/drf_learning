@@ -4,8 +4,29 @@ from django.urls import path, include
 from guitars.views import GuitarsViewSet
 from rest_framework import routers
 
-router = routers.SimpleRouter()
-router.register(r'guitars', GuitarsViewSet)
+
+# Как работает роутер под капотом.
+# class MyCustomRouter(routers.SimpleRouter):
+#     routes = [
+#         routers.Route(
+#             url=r'^{prefix}$',
+#             mapping={'get': 'list'},
+#             name='{basename}-list',
+#             detail=False,
+#             initkwargs={'suffix': 'List'}),
+#         routers.Route(
+#             url=r'^{prefix}/{lookup}$',
+#             mapping={'get': 'retrieve'},
+#             name='{basename}-detail',
+#             detail=True,
+#             initkwargs={'suffix': 'Detail'}),
+#     ]
+
+
+router = routers.DefaultRouter()
+# Если из ViewSet убираем атрибут queryset,
+# в роутере необходимо указать basename.
+router.register(r'guitars', GuitarsViewSet, basename='guitars')
 
 urlpatterns = [
     path('admin/', admin.site.urls),
