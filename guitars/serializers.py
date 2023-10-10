@@ -17,6 +17,7 @@ class GuitarsSerializer(serializers.ModelSerializer):
 #     time_update = serializers.DateTimeField(read_only=True)
 #     is_published = serializers.BooleanField(default=True)
 #     cat_id = serializers.IntegerField()
+#     user = serializers.HiddenField(default=serializers.CurrentUserDefault())
 #
 #     def create(self, validated_data):
 #         return Guitars.objects.create(**validated_data)
