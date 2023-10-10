@@ -29,6 +29,7 @@ INSTALLED_APPS = [
     # Мои приложения
     'guitars.apps.GuitarsConfig',
     # Сторонние приложения
+    'drf_yasg',
     'rest_framework',
     'rest_framework.authtoken',
     'djoser',
