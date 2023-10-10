@@ -1,8 +1,8 @@
 from django.contrib import admin
 from django.urls import path, include
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView, TokenVerifyView
-
 from guitars.views import GuitarsAPIList, GuitarsAPIUpdate, GuitarsAPIDestroy
+from .yasg import urlpatterns as doc_urls
 
 # from guitars.views import GuitarsViewSet # Импорт для использования ViewSet
 # from rest_framework import routers # Импорт для использования роутера
@@ -19,6 +19,8 @@ urlpatterns = [
     path('api/v1/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
     path('api/v1/token/verify/', TokenVerifyView.as_view(), name='token_verify'),
 ]
+
+urlpatterns += doc_urls
 # Как работает роутер под капотом.
 # class MyCustomRouter(routers.SimpleRouter):
 #     routes = [
