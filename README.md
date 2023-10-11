@@ -1,1 +1,1 @@
-no YAGNI frendly
+
